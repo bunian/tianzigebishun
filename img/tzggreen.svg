@@ -1,0 +1,7 @@
+<svg width="80px" height="80px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+<path d="M-2 40 L80 40" stroke-dasharray="4,4" stroke-width="1" stroke="#70d39d" fill-opacity="0"/>
+<path d="M40 -2 L40 80" stroke-dasharray="4,4" stroke-width="1" stroke="#70d39d" fill-opacity="0"/>
+<path d="M1 1 l78 0 l0 78 l-78 0 Z" stroke-width="2" stroke="#00b050" fill-opacity="0"/>
+
+</svg>

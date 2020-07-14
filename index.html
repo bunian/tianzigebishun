@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js no-svg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform " />
+<title>田字格笔顺 字帖生成器</title>
+<meta name="keywords" content="田字格字帖,字帖,字帖打印,笔顺字帖,儿童田字格打印" />
+<meta name="description" content="7年老牌田字格字帖生成工具，可以在线生成田字格字帖、米字格、回宫格字帖，支持任意汉字定制，并支持笔顺，支持田英章字体、庞中华字体，田字格作是最为精简的练习格，被小学低年级语文课本作为生字词的展示方式。小学时期，特别是低年级阶段，是学习汉字书写的关键时期，使用本系统生成田字格字帖，让低年级小学生逐渐将汉字写规范，养成正确的汉字笔顺书写习惯，给以后的语文学习和汉字书写打下坚实的基础。" />
+<style>
+body,div,p,h1{ padding:0; margin:0; list-style:none;}
+body{color:#222; font-size:14px; font-family:"微软雅黑";padding-top:10px;padding-bottom:56px;}
+div{width: 95%;max-width:980px; margin:0px auto; line-height:42px;}
+a{color: #222;text-decoration: none}
+textarea{width: 95%;max-width:950px; height:180px;border:1px solid #ccc;border-radius: 8px;padding:10px;outline: none;}
+div.btn{ text-align:center; height:60px; line-height:50px; }
+div.btn input{ width:88px; height:33px; font-size:18px;}
+p{ margin-left:28px;}
+div.top{width: 100%;max-width:980px; height:45px; margin:0px auto; padding:12px 0px;}
+div.top h1{ font-size:32px; font-weight:bold;}
+.green{ color:#009900;}
+.red{ color:#cc0000;}
+.info{ padding:12px 8px;border:1px dashed #ccc; line-height:28px;border-radius: 8px;}
+.info strong, #description strong{color:red;font-size:16px;}
+.info span{font-size:16px;}
+#prompt h3{padding: 3px;margin: 0;}
+#description{padding: 12px 0px;line-height: 28px;}
+.input{width: 95%;max-width:360px;height: 26px; border-radius:5px; border:1px solid #ccc;padding: 1px 6px;}
+</style>
+</head>
+
+<body>
+
+<div class="top"><h1>田字格笔顺 字帖生成器</h1></div>
+
+<form action="tzg.php" method="post" target="_blank">
+<div id="description">
+
+	田字格字帖生成器，低年级学生练字神器，<strong>共收录9574个常用汉字！</strong><br>
+	本系统可以在线生成田字格、米字格<span>完全免费</span>。田字格是最精简的练习格，被小学低年级语文课本作为生字词的展示方式。小学时期，特别是低年级阶段，是学习汉字书写的关键时期，使用本系统生成田字格字帖，让低年级小学生逐渐将汉字写规范，养成正确的汉字笔顺书写习惯，给以后的语文学习和汉字书写打下坚实的基础。<br>
+	<strong>打印时勾选打印背景图片！</strong><strong>才可以把表格打印出来！</strong>不会操作请阅读页面下方教程！
+	
+	</div>
+	
+<div id="prompt"><h3>请输入想要生成的汉字：</h3></div>
+<div><textarea name="words"></textarea></div>
+
+
+<div>田格类型：
+<input type="radio" name="types" value="tzg" checked  >田字格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="types" value="mzg">米字格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+<div>田格颜色：
+<input type="radio" name="bgcolor" value="green" ><span class="green">绿色</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="bgcolor" value="black" checked >黑色&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="bgcolor" value="red"><span class="red">红色
+</span>
+</div>
+
+<div>文字颜色：
+<input type="radio" name="zcolor" value="green" ><span class="green">绿色</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="zcolor" value="black" checked >黑色&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="zcolor" value="red"><span class="red">红色</span>
+</div>
+
+<div>描红背景：
+<input type="radio" name="fcolor" value="1" ><span style="color:#888888">非常深</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="fcolor" value="2" ><span style="color:#999999">深</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="fcolor" value="3" ><span style="color:#a0a0a0">较深</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="fcolor" value="4"> <span style="color:#aaaaaa">略浅</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="fcolor" value="5" checked><span style="color:#b8b8b8">适中</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="fcolor" value="6"><span style="color:#cccccc">非常浅</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!--input type="radio" name="fcolor" value="10"><span style="color:#ffffff; background:#666;padding:0px 3px;">白色（不可见）</span-->
+</div>
+
+<div id="bsfill" style="">笔顺剩余填充：
+<input type="radio" name="bs" value="1"><span>是</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="bs" value="0" checked="">否</div>
+
+<div>自定义页头：<input type="text" name="title" value="田字格字帖生成器" class="input"></div>
+
+<div class="btn"><input type="submit" value="生成" ></div>
+</form>
+
+<div class="info">
+<strong>注意：</strong>请认真阅读以下内容<p>
+1、为保证打印效果，建议使用微软Edge浏览器、谷歌浏览器，字体为楷体，<span>打印设置勾选打印背景图片</span>;<br>
+2、想将字帖生成文件，可以使用PDF打印机，打印成PDF文件。<a href="https://www.jb51.net/softs/584517.html" target="_blank">点击下载</a>
+<br>
+<img src="img/print.png" style="
+    max-width: 300px;
+    width: 100%;
+"><br>
+
+</p>
+</div>
+
+</body>
+</html>
