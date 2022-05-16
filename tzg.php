@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-
+include_once 'Pinyin.php';
 
 $words=$_POST['words']??'';//笔顺字
 
@@ -15,6 +15,7 @@ $z_color=$_POST['zcolor']??'black';//主字体颜色
 $f_color=$_POST['fcolor']??'5';//辅字体颜色
 $title=$_POST['title']??'';//辅字体颜色
 $bs=$_POST['bs']??'0';//笔顺填充
+$py=$_POST['py']??'0';//拼音
 
 /*过滤掉非中文*/
 preg_match_all('/[\x{4e00}-\x{9fff}]+/u', $words, $words);
@@ -109,8 +110,18 @@ for($ihz=0;$ihz<count($hz['0']);$ihz++){
 	$count=count($data['strokes']);//统计共有多少画
 
 
-	/*显示完整字符*/
-	echo '<li class="svg"><svg width="54" height="54" style="margin-top: -11px;"><g transform="translate(-2.9,48) scale(0.058, -0.0572)">';
+	/*显示完整字符和拼音*/
+	
+	if($py)
+	{
+		//print_r($hz['0'][$ihz]);
+		$py_str=Pinyin::getPinyin($hz['0'][$ihz]);
+		echo '<li class="svg" style="positon: relative;"><span style="font:2px bolder;display:block;position:absolute;width:80px;color:rgb('.$color.')">'.$py_str.'</span><svg width="54" height="54" style="margin-top: -11px;"><g transform="translate(-2.9,48) scale(0.058, -0.0572)">';
+	}
+	else
+	{
+		echo '<li class="svg"><svg width="54" height="54" style="margin-top: -11px;"><g transform="translate(-2.9,48) scale(0.058, -0.0572)">';
+	}
 	
 	foreach ($data['strokes'] as $v){
 		echo '<path d="'.$v.'"style="fill:rgb('.$color.');stroke:rgb('.$color.');" stroke-width = "0"></path>';
