@@ -18,4 +18,7 @@ https://github.com/skishore/makemeahanzi
 
 https://github.com/chanind/hanzi-writer-data
 
+# 拼音
+
+https://github.com/jifei/Pinyin
 
