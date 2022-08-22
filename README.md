@@ -3,6 +3,11 @@
 田字格笔顺 字帖生成器
 
 
+# 前端+文案作者
+
+github主页: https://github.com/hyman-ren
+
+
 
 # 演示：
 https://lab.feifanju.com/zitie/
