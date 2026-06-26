@@ -1,101 +1,389 @@
+
 <!DOCTYPE html>
-<html lang="zh-CN" class="no-js no-svg">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta http-equiv="Cache-Control" content="no-transform " />
+<meta http-equiv="Cache-Control" content="no-transform" />
 <title>田字格笔顺 字帖生成器</title>
 <meta name="keywords" content="田字格字帖,笔顺字帖" />
 <meta name="description" content="田字格字帖生成工具" />
 <style>
-body,div,p,h1{ padding:0; margin:0; list-style:none;}
-body{color:#222; font-size:14px; font-family:"微软雅黑";padding-top:10px;padding-bottom:56px;}
-div{width: 95%;max-width:980px; margin:0px auto; line-height:42px;}
-a{color: #222;text-decoration: none}
-textarea{width: 95%;max-width:950px; height:180px;border:1px solid #ccc;border-radius: 8px;padding:10px;outline: none;}
-div.btn{ text-align:center; height:60px; line-height:50px; }
-div.btn input{ width:88px; height:33px; font-size:18px;}
-p{ margin-left:28px;}
-div.top{width: 100%;max-width:980px; height:45px; margin:0px auto; padding:12px 0px;}
-div.top h1{ font-size:32px; font-weight:bold;}
-.green{ color:#009900;}
-.red{ color:#cc0000;}
-.info{ padding:12px 8px;border:1px dashed #ccc; line-height:28px;border-radius: 8px;}
-.info strong, #description strong{color:red;font-size:16px;}
-.info span{font-size:16px;}
-#prompt h3{padding: 3px;margin: 0;}
-#description{padding: 12px 0px;line-height: 28px;}
-.input{width: 95%;max-width:360px;height: 26px; border-radius:5px; border:1px solid #ccc;padding: 1px 6px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --primary:#4F6EF7;
+  --primary-light:#6B85F9;
+  --primary-bg:#EEF1FE;
+  --success:#34C759;
+  --danger:#FF3B30;
+  --text:#1D1D1F;
+  --text-secondary:#6E6E73;
+  --text-tertiary:#AEAEB2;
+  --bg:#F5F5F7;
+  --card:#FFFFFF;
+  --border:#E5E5EA;
+  --radius:14px;
+  --radius-sm:10px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+  --shadow-lg:0 8px 32px rgba(0,0,0,0.08);
+  --transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.6;
+  min-height:100vh;
+}
+/* Header */
+.header{
+  background:linear-gradient(135deg,var(--primary) 0%,#7B61FF 100%);
+  padding:40px 20px 48px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.header::before{
+  content:'';position:absolute;top:-40%;right:-20%;width:60%;height:180%;
+  background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.header h1{
+  color:#fff;font-size:28px;font-weight:700;letter-spacing:1px;
+  text-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.header p{
+  color:rgba(255,255,255,0.85);font-size:14px;margin-top:8px;
+}
+/* Main Container */
+.container{
+  max-width:640px;margin:-28px auto 40px;padding:0 16px;position:relative;z-index:1;
+}
+/* Card */
+.card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:28px 24px;margin-bottom:16px;
+  transition:var(--transition);
+}
+.card:hover{box-shadow:var(--shadow-lg);}
+/* Section Title */
+.section-title{
+  font-size:15px;font-weight:600;color:var(--text);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-title .icon{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.section-title .icon.blue{background:var(--primary-bg);color:var(--primary);}
+.section-title .icon.green{background:#E8F8ED;color:var(--success);}
+.section-title .icon.red{background:#FFEDED;color:var(--danger);}
+.section-title .icon.purple{background:#F3EDFF;color:#7B61FF;}
+.section-title .icon.orange{background:#FFF3E6;color:#FF9500;}
+/* Textarea */
+.textarea-wrap{position:relative;}
+textarea{
+  width:100%;height:140px;border:2px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px 16px;outline:none;font-size:16px;line-height:1.8;
+  font-family:inherit;resize:vertical;color:var(--text);
+  transition:var(--transition);background:var(--card);
+}
+textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(79,110,247,0.12);}
+textarea::placeholder{color:var(--text-tertiary);}
+/* Radio Groups */
+.radio-group{
+  display:flex;flex-wrap:wrap;gap:10px;
+}
+.radio-item{
+  position:relative;cursor:pointer;
+}
+.radio-item input[type="radio"]{
+  position:absolute;opacity:0;width:0;height:0;
+}
+.radio-item .label{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:20px;
+  border:1.5px solid var(--border);
+  background:var(--card);color:var(--text-secondary);
+  font-size:14px;transition:var(--transition);
+  user-select:none;
+}
+.radio-item .label:hover{
+  border-color:var(--primary-light);color:var(--primary);
+}
+.radio-item input:checked + .label{
+  border-color:var(--primary);background:var(--primary-bg);
+  color:var(--primary);font-weight:500;
+}
+/* Color Dots */
+.color-dot{
+  width:14px;height:14px;border-radius:50%;border:2px solid rgba(0,0,0,0.1);
+  display:inline-block;flex-shrink:0;
+}
+.color-dot.green{background:#34C759;}
+.color-dot.black{background:#1D1D1F;}
+.color-dot.red{background:#FF3B30;}
+/* Depth Bars */
+.depth-bar{
+  width:36px;height:14px;border-radius:4px;display:inline-block;flex-shrink:0;
+}
+.depth-1{background:#555;}
+.depth-2{background:#777;}
+.depth-3{background:#999;}
+.depth-4{background:#AAA;}
+.depth-5{background:#BBB;}
+.depth-6{background:#DDD;}
+/* Input */
+.text-input{
+  width:100%;max-width:320px;height:42px;border:2px solid var(--border);
+  border-radius:var(--radius-sm);padding:0 14px;font-size:14px;
+  outline:none;color:var(--text);transition:var(--transition);
+  font-family:inherit;
+}
+.text-input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(79,110,247,0.12);}
+/* Toggle Switch */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:4px 0;
+}
+.toggle-row span{font-size:14px;color:var(--text);}
+.toggle{
+  position:relative;width:48px;height:28px;cursor:pointer;
+}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle .slider{
+  position:absolute;inset:0;background:#E5E5EA;border-radius:14px;
+  transition:var(--transition);
+}
+.toggle .slider::before{
+  content:'';position:absolute;left:2px;top:2px;width:24px;height:24px;
+  background:#fff;border-radius:50%;transition:var(--transition);
+  box-shadow:0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle input:checked + .slider{background:var(--primary);}
+.toggle input:checked + .slider::before{transform:translateX(20px);}
+/* Submit Button */
+.btn-submit{
+  width:100%;height:52px;border:none;border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--primary) 0%,#7B61FF 100%);
+  color:#fff;font-size:17px;font-weight:600;letter-spacing:2px;
+  cursor:pointer;transition:var(--transition);
+  box-shadow:0 4px 16px rgba(79,110,247,0.35);
+}
+.btn-submit:hover{
+  transform:translateY(-1px);box-shadow:0 6px 24px rgba(79,110,247,0.45);
+}
+.btn-submit:active{
+  transform:translateY(0);box-shadow:0 2px 8px rgba(79,110,247,0.3);
+}
+/* Notice */
+.notice{
+  border-left:4px solid var(--danger);background:#FFF8F7;
+  padding:20px 20px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+}
+.notice strong{color:var(--danger);font-size:15px;}
+.notice p{margin-top:8px;color:var(--text-secondary);font-size:13px;line-height:2;}
+.notice a{color:var(--primary);text-decoration:none;font-weight:500;}
+.notice a:hover{text-decoration:underline;}
+.notice img{
+  max-width:280px;width:100%;border-radius:8px;margin-top:8px;
+  border:1px solid var(--border);
+}
+/* Footer */
+.footer{
+  text-align:center;padding:24px;color:var(--text-tertiary);font-size:12px;
+}
+/* Responsive */
+@media(max-width:480px){
+  .header{padding:28px 16px 36px;}
+  .header h1{font-size:22px;}
+  .card{padding:20px 16px;}
+  .radio-group{gap:6px;}
+  .radio-item .label{padding:6px 12px;font-size:13px;}
+  .depth-bar{width:28px;height:12px;}
+}
 </style>
 </head>
 
 <body>
 
-<div class="top"><h1>田字格笔顺 字帖生成器</h1></div>
+<!-- Header -->
+<div class="header">
+  <h1>田字格笔顺 字帖生成器</h1>
+  <p>轻松生成田字格 / 米字格字帖，辅助书写练习</p>
+</div>
 
+<!-- Main -->
 <form action="tzg.php" method="post" target="_blank">
-<div id="description">
+<div class="container">
 
-	田字格字帖生成器，如不会打印请查看下方教程
-	
-	
-	</div>
-	
-<div id="prompt"><h3>请输入想要生成的汉字：</h3></div>
-<div><textarea name="words"></textarea></div>
+  <!-- Input Card -->
+  <div class="card">
+    <div class="section-title">
+      <span class="icon blue">字</span>
+      输入汉字
+    </div>
+    <div class="textarea-wrap">
+      <textarea name="words" placeholder="请输入想要练习的汉字，如：天地人和"></textarea>
+    </div>
+  </div>
 
+  <!-- Grid Type & Colors -->
+  <div class="card">
+    <div class="section-title">
+      <span class="icon green">格</span>
+      格式设置
+    </div>
 
-<div>田格类型：
-<input type="radio" name="types" value="tzg" checked  >田字格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="types" value="mzg">米字格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- Grid Type -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">田格类型</div>
+      <div class="radio-group">
+        <label class="radio-item">
+          <input type="radio" name="types" value="tzg" checked>
+          <span class="label">田字格</span>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="types" value="mzg">
+          <span class="label">米字格</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Grid Color -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">田格颜色</div>
+      <div class="radio-group">
+        <label class="radio-item">
+          <input type="radio" name="bgcolor" value="green">
+          <span class="label"><span class="color-dot green"></span>绿色</span>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="bgcolor" value="black" checked>
+          <span class="label"><span class="color-dot black"></span>黑色</span>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="bgcolor" value="red">
+          <span class="label"><span class="color-dot red"></span>红色</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Text Color -->
+    <div>
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">文字颜色</div>
+      <div class="radio-group">
+        <label class="radio-item">
+          <input type="radio" name="zcolor" value="green">
+          <span class="label"><span class="color-dot green"></span>绿色</span>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="zcolor" value="black" checked>
+          <span class="label"><span class="color-dot black"></span>黑色</span>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="zcolor" value="red">
+          <span class="label"><span class="color-dot red"></span>红色</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trace Depth -->
+  <div class="card">
+    <div class="section-title">
+      <span class="icon red">描</span>
+      描红设置
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">描红深度</div>
+    <div class="radio-group">
+      <label class="radio-item">
+        <input type="radio" name="fcolor" value="1">
+        <span class="label"><span class="depth-bar depth-1"></span>非常深</span>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="fcolor" value="2">
+        <span class="label"><span class="depth-bar depth-2"></span>深</span>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="fcolor" value="3">
+        <span class="label"><span class="depth-bar depth-3"></span>较深</span>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="fcolor" value="4">
+        <span class="label"><span class="depth-bar depth-4"></span>略浅</span>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="fcolor" value="5" checked>
+        <span class="label"><span class="depth-bar depth-5"></span>适中</span>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="fcolor" value="6">
+        <span class="label"><span class="depth-bar depth-6"></span>非常浅</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Options -->
+  <div class="card">
+    <div class="section-title">
+      <span class="icon purple">选</span>
+      更多选项
+    </div>
+    <div class="toggle-row" style="margin-bottom:14px;">
+      <span>笔顺剩余填充</span>
+      <input type="hidden" name="bs" value="0">
+      <label class="toggle">
+        <input type="checkbox" name="bs" value="1">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row" style="margin-bottom:20px;">
+      <span>显示拼音</span>
+      <input type="hidden" name="py" value="0">
+      <label class="toggle">
+        <input type="checkbox" name="py" value="1">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;font-weight:500;">自定义页头</div>
+    <input type="text" name="title" value="田字格字帖生成器" class="text-input" placeholder="输入页头文字">
+  </div>
+
+  <!-- Submit -->
+  <div class="card" style="padding:20px 24px;">
+    <button type="submit" class="btn-submit">生成字帖</button>
+  </div>
+
 </div>
-<div>田格颜色：
-<input type="radio" name="bgcolor" value="green" ><span class="green">绿色</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="bgcolor" value="black" checked >黑色&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="bgcolor" value="red"><span class="red">红色
-</span>
-</div>
-
-<div>文字颜色：
-<input type="radio" name="zcolor" value="green" ><span class="green">绿色</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="zcolor" value="black" checked >黑色&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="zcolor" value="red"><span class="red">红色</span>
-</div>
-
-<div>描红背景：
-<input type="radio" name="fcolor" value="1" ><span style="color:#888888">非常深</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="fcolor" value="2" ><span style="color:#999999">深</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="fcolor" value="3" ><span style="color:#a0a0a0">较深</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="fcolor" value="4"> <span style="color:#aaaaaa">略浅</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="fcolor" value="5" checked><span style="color:#b8b8b8">适中</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="fcolor" value="6"><span style="color:#cccccc">非常浅</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!--input type="radio" name="fcolor" value="10"><span style="color:#ffffff; background:#666;padding:0px 3px;">白色（不可见）</span-->
-</div>
-
-<div id="bsfill" style="">笔顺剩余填充：
-<input type="radio" name="bs" value="1"><span>是</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="bs" value="0" checked="">否</div>
-<div id="pyfill" style="">显示拼音：
-<input type="radio" name="py" value="1"><span>是</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="radio" name="py" value="0" checked="">否</div>
-
-<div>自定义页头：<input type="text" name="title" value="田字格字帖生成器" class="input"></div>
-
-<div class="btn"><input type="submit" value="生成" ></div>
 </form>
 
-<div class="info">
-<strong>注意：</strong>请认真阅读以下内容<p>
-1、为保证打印效果，建议使用微软Edge浏览器、谷歌浏览器，字体为楷体，<span>打印设置勾选打印背景图片</span>;<br>
-2、想将字帖生成文件，可以使用PDF打印机，打印成PDF文件。<a href="https://www.jb51.net/softs/584517.html" target="_blank">点击下载</a>
-<br>
-<img src="img/print.png" style="
-    max-width: 300px;
-    width: 100%;
-"><br>
-
-</p>
+<!-- Notice -->
+<div class="container">
+  <div class="card notice">
+    <strong>打印注意事项</strong>
+    <p>
+      1、建议使用 Microsoft Edge 或 Chrome 浏览器，字体为楷体，打印时请勾选「打印背景图片」；<br>
+      2、如需生成文件，可使用 PDF 虚拟打印机打印为 PDF。<a href="https://www.jb51.net/softs/584517.html" target="_blank">点击下载</a>
+    </p>
+    <img src="img/print.png" alt="打印设置示意">
+  </div>
 </div>
 
+<div class="footer">田字格笔顺 字帖生成器</div>
+
+<script>
+// Toggle checkbox: when checked, disable sibling hidden so PHP gets value=1; when unchecked, re-enable hidden so PHP gets value=0
+document.querySelectorAll('.toggle input[type="checkbox"]').forEach(function(cb){
+  var hidden = cb.closest('.toggle-row').querySelector('input[type="hidden"][name="'+cb.name+'"]');
+  function sync(){
+    if(hidden) hidden.disabled = cb.checked;
+  }
+  cb.addEventListener('change', sync);
+  sync();
+});
+</script>
 </body>
 </html>
